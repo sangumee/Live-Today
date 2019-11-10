@@ -16,10 +16,11 @@ var config = {
     path: BUILD_DIR,
     filename: "client.min.js"
   },
+  mode: 'development',
 
   module: {
-    rules: [
-      {
+
+    rules: [{
         test: /\.(jpe?g|png|gif)$/i, //to support eg. background-image property
         loader: "file-loader",
         query: {
@@ -45,8 +46,12 @@ var config = {
           presets: ["@babel/preset-react", "@babel/preset-env"],
           plugins: [
             "react-html-attrs",
-            ["@babel/plugin-proposal-decorators", { legacy: true }],
-            ["@babel/plugin-proposal-class-properties", { loose: true }]
+            ["@babel/plugin-proposal-decorators", {
+              legacy: true
+            }],
+            ["@babel/plugin-proposal-class-properties", {
+              loose: true
+            }]
           ]
         }
       },
@@ -67,13 +72,14 @@ var config = {
     }
   },
 
-  plugins: debug
-    ? []
-    : [
-        new webpack.optimize.DedupePlugin(),
-        new webpack.optimize.OccurrenceOrderPlugin(),
-        new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false })
-      ]
+  plugins: debug ? [] : [
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      mangle: false,
+      sourcemap: false
+    })
+  ]
 };
 
 module.exports = config;
