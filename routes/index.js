@@ -89,10 +89,6 @@ router.get(
   }
 );
 
-/* Login Page Router */
-// router.get(`/auth/login`, function (req, res, next) {
-//   res.render("login", {});
-// });
 
 router.get(`/auth/res`, function (req, res, next) {
   res.send("login");
