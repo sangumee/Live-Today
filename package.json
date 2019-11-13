@@ -59,7 +59,7 @@
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-react-html-attrs": "^2.0.0",
     "css-loader": "^3.2.0",
-    "nodemon": "^1.18.7",
+    "nodemon": "^1.19.4",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.19.0",
     "styles-loader": "^1.0.0",
@@ -70,7 +70,7 @@
     "webpack-stream": "^5.2.1"
   },
   "scripts": {
-    "server": "nodemon app.js --exec babel-node",
+    "server": "nodemon app.js --exec babel-node --delay 5",
     "react": "webpack",
     "start": "concurrently \"npm run react\" \"npm run server\""
   }
