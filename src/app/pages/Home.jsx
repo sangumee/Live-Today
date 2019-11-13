@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
 
-import User from "../components/User.jsx";
+// import User from "../components/User.jsx";
 import Menu from "../components/Menu.jsx";
 
 class Home extends React.Component {
@@ -10,7 +10,7 @@ class Home extends React.Component {
       <div className="page">
         <Menu />
         <div className="home">
-          <User />
+          {/* <User /> */}
           <p>Welcome to the ReactJS and ExpressJS generator</p>
           <p>
             Check out the{" "}
