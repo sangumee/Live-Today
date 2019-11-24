@@ -1,77 +1,39 @@
 {
-  "name": "livetoday",
+  "name": "example-create-react-app-express",
   "version": "1.0.0",
-  "description": "livetoday webapp",
-  "homepage": "",
+  "description": "Example on using create-react-app with a Node Express Backend",
   "author": {
-    "name": "sihyeonglee",
-    "email": "super2451894@gmail.com",
-    "url": "https://writingdeveloper.tistory.com/"
+    "name": "Esau Silva",
+    "twitter": "@_esausilva",
+    "url": "https://esausilva.com"
   },
-  "main": "app.js",
+  "license": "MIT",
+  "scripts": {
+    "client": "cd client && yarn start",
+    "server": "nodemon server.js",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "dev:server": "cd client && yarn build && cd .. && yarn start",
+    "start": "node server.js",
+    "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+  },
   "dependencies": {
-    "@material-ui/core": "^4.6.0",
-    "@material-ui/icons": "^4.5.1",
-    "body-parser": "^1.18.3",
-    "concurrently": "^4.1.0",
-    "cookie-parser": "^1.4.3",
-    "debug": "^4.1.0",
-    "dotenv": "6.2.0",
-    "express": "^4.16.4",
-    "express-session": "^1.17.0",
-    "mongodb": "^3.3.3",
-    "mongoose": "^5.7.7",
-    "node-sass": "^4.5.3",
-    "node-sass-middleware": "^0.11.0",
-    "passport": "^0.4.0",
-    "passport-github": "^1.1.0",
-    "passport-google-oauth20": "^2.0.0",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
-    "react-router-dom": "^4.2.2",
-    "react-social-login-buttons": "^3.0.0",
-    "session-file-store": "^1.3.1",
-    "typeface-roboto": "0.0.75"
+    "@material-ui/core": "^4.7.0",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
-    "@babel/node": "^7.0.0",
-    "@babel/plugin-proposal-class-properties": "^7.0.0",
-    "@babel/plugin-proposal-decorators": "^7.3.0",
-    "@babel/plugin-proposal-do-expressions": "^7.0.0",
-    "@babel/plugin-proposal-export-default-from": "^7.0.0",
-    "@babel/plugin-proposal-export-namespace-from": "^7.0.0",
-    "@babel/plugin-proposal-function-bind": "^7.0.0",
-    "@babel/plugin-proposal-function-sent": "^7.0.0",
-    "@babel/plugin-proposal-json-strings": "^7.0.0",
-    "@babel/plugin-proposal-logical-assignment-operators": "^7.0.0",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.0.0",
-    "@babel/plugin-proposal-numeric-separator": "^7.0.0",
-    "@babel/plugin-proposal-optional-chaining": "^7.0.0",
-    "@babel/plugin-proposal-pipeline-operator": "^7.0.0",
-    "@babel/plugin-proposal-throw-expressions": "^7.0.0",
-    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
-    "@babel/plugin-syntax-import-meta": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
-    "@babel/preset-react": "^7.0.0",
-    "babel-loader": "^8.0.0",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-plugin-react-html-attrs": "^2.0.0",
-    "css-loader": "^3.2.0",
-    "nodemon": "^1.19.4",
-    "sass-loader": "^6.0.6",
-    "style-loader": "^0.19.0",
-    "styles-loader": "^1.0.0",
-    "url-loader": "^0.6.2",
-    "webpack": "^4.26.1",
-    "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.10",
-    "webpack-stream": "^5.2.1"
+    "concurrently": "^4.1.0"
   },
-  "scripts": {
-    "server": "nodemon app.js --exec babel-node --delay 5",
-    "react": "webpack",
-    "start": "concurrently \"npm run react\" \"npm run server\""
-  }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/esausilva/example-create-react-app-express.git"
+  },
+  "bugs": {
+    "url": "https://github.com/esausilva/example-create-react-app-express/issues"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "create-react-app"
+  ]
 }
