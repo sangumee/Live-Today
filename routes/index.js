@@ -5,11 +5,20 @@ const router = express.Router();
 const got = require('got');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('main', { title: 'Live Today' });
+router.get('/', function (req, res, next) {
+  res.render('main', {
+    title: 'Live Today'
+  });
 });
 
-router.get('/test', async function(req, res, next) {
+router.get('/auth/login', (req, res) => {
+  console.log('aaple');
+  res.render('login', {
+    title: 'Live Today Login & Register'
+  });
+});
+
+router.get('/test', async function (req, res, next) {
   let testData = await got.post('https://httpbin.org/anything', {
     json: {
       hello: 'world'
