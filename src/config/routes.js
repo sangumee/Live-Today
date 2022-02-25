@@ -1,114 +1,151 @@
 /* eslint-disable react/jsx-key */
-import React, { lazy } from 'react'
 import AuthorizedRoute from 'base-shell/lib/components/AuthorizedRoute'
-import UnauthorizedRoute from 'base-shell/lib/components/UnauthorizedRoute'
+import React, { lazy } from 'react'
 
-const SignIn = lazy(() => import('../pages/SignIn/SignIn'))
-
-const SignUp = lazy(() => import('../pages/SignUp/SignUp'))
-const PasswordReset = lazy(() => import('../pages/PasswordReset/PasswordReset'))
 const About = lazy(() => import('../pages/About'))
-const Home = lazy(() => import('../pages/Home/Home'))
-const DialogDemo = lazy(() => import('../pages/DialogDemo/DialogDemo'))
-const ToastDemo = lazy(() => import('../pages/ToastDemo/ToastDemo'))
-const FilterDemo = lazy(() => import('../pages/FilterDemo'))
-const ListPageDemo = lazy(() => import('../pages/ListPageDemo'))
-const TabsDemo = lazy(() => import('../pages/TabsDemo'))
-const MyAccount = lazy(() => import('../pages/MyAccount/MyAccount'))
+const Admin = lazy(() => import('../pages/Demo/Admin'))
+const Companies = lazy(() => import('../pages/Demo/Companies'))
+const Company = lazy(() => import('../pages/Demo/Companies/Company'))
+const Tasks = lazy(() => import('../pages/Demo/Tasks'))
+const Task = lazy(() => import('../pages/Demo/Tasks/Task'))
+const FirebaseCols = lazy(() => import('../pages/Firebase/Cols'))
+const FirebaseDocs = lazy(() => import('../pages/Firebase/Docs'))
+const FirebaseLists = lazy(() => import('../pages/Firebase/Lists'))
+const FirebaseMessaging = lazy(() => import('../pages/Firebase/Messaging'))
+const FirebasePaths = lazy(() => import('../pages/Firebase/Paths'))
+const FirebaseStorage = lazy(() => import('../pages/Firebase/Storage'))
+const Dashboard = lazy(() => import('../pages/Dashboard'))
 
 const routes = [
-  {
-    path: '/signin',
-    exact: true,
-    element: (
-      <UnauthorizedRoute>
-        <SignIn redirectTo="/home" />
-      </UnauthorizedRoute>
-    ),
-  },
-  {
-    path: '/signup',
-    exact: true,
-    element: (
-      <UnauthorizedRoute>
-        <SignUp redirectTo="/home" />
-      </UnauthorizedRoute>
-    ),
-  },
-  {
-    path: '/password_reset',
-    exact: true,
-    element: (
-      <UnauthorizedRoute>
-        <PasswordReset redirectTo="/home" />
-      </UnauthorizedRoute>
-    ),
-  },
   {
     path: '/about',
     exact: true,
     element: <About />,
   },
   {
-    path: '/my_account',
+    path: '/dashboard',
     exact: true,
     element: (
       <AuthorizedRoute>
-        <MyAccount />
+        <Dashboard />
       </AuthorizedRoute>
     ),
   },
   {
-    path: '/home',
+    path: '/firebase_paths',
     exact: true,
     element: (
       <AuthorizedRoute>
-        <Home />
+        <FirebasePaths />
       </AuthorizedRoute>
     ),
   },
   {
-    path: '/dialog_demo',
+    path: '/firebase_lists',
     exact: true,
     element: (
       <AuthorizedRoute>
-        <DialogDemo />
+        <FirebaseLists />
       </AuthorizedRoute>
     ),
   },
   {
-    path: '/toast_demo',
+    path: '/firebase_docs',
     exact: true,
     element: (
       <AuthorizedRoute>
-        <ToastDemo />
+        <FirebaseDocs />
       </AuthorizedRoute>
     ),
   },
   {
-    path: '/filter_demo',
+    path: '/firebase_cols',
     exact: true,
     element: (
       <AuthorizedRoute>
-        <FilterDemo />
+        <FirebaseCols />
       </AuthorizedRoute>
     ),
   },
   {
-    path: '/list_page_demo',
+    path: '/admin',
     exact: true,
     element: (
       <AuthorizedRoute>
-        <ListPageDemo />
+        <Admin />
       </AuthorizedRoute>
     ),
   },
   {
-    path: '/tabs_demo',
+    path: '/companies',
     exact: true,
     element: (
       <AuthorizedRoute>
-        <TabsDemo />
+        <Companies />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/companies/:uid',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <Company />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/create_company',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <Company />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/tasks',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <Tasks />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/tasks/:uid',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <Task />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/create_task',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <Task />
+      </AuthorizedRoute>
+    ),
+  },
+
+  {
+    path: '/firebase_messaging',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <FirebaseMessaging />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/firebase_storage',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <FirebaseStorage />
       </AuthorizedRoute>
     ),
   },

@@ -1,46 +1,50 @@
 import React from 'react'
+import allLocales from './locales'
+import allThemes from './themes'
+
 import {
-  AccountBox as AccountBoxIcon,
-  ChatBubble,
+  Assignment,
+  Business,
   ChromeReaderMode,
-  Dashboard as DashboardIcon,
-  ExitToApp as ExitToAppIcon,
-  FilterList,
-  FormatTextdirectionRToL as RTLIcon,
-  FormatTextdirectionLToR as LTRIcon,
+  Web,
   GetApp,
   InfoOutlined,
+  People,
+  Security,
+  Slideshow,
+  Whatshot,
+  Chat,
+  AccountBox as AccountBoxIcon,
+  Dashboard as DashboardIcon,
+  ExitToApp as ExitToAppIcon,
+  FormatTextdirectionRToL as RTLIcon,
+  FormatTextdirectionLToR as LTRIcon,
   Language as LanguageIcon,
   Lock as LockIcon,
   MenuOpen as MenuOpenIcon,
-  QuestionAnswer,
   SettingsApplications as SettingsIcon,
   Style as StyleIcon,
-  Tab,
-  ViewList,
-  Web,
 } from '@mui/icons-material'
-
-import allLocales from './locales'
-import allThemes from './themes'
+import { getAuth } from 'firebase/auth'
 
 const getMenuItems = (props) => {
   const {
     intl,
     updateLocale,
     locale,
-    menuContext,
     themeContext,
+    menuContext,
     a2HSContext,
     auth: authData,
   } = props
 
-  const { toggleThis, isDesktop, isAuthMenuOpen, isMiniSwitchVisibility } =
-    menuContext
-  const { themeID, setThemeID, isRTL, toggleThisTheme } = themeContext
+  const { isAuthMenuOpen, isDesktop, isMiniSwitchVisibility, toggleThis } =
+    menuContext || {}
+  const { isRTL, setThemeID, themeID, toggleThisTheme } = themeContext || {}
+  const { isAppInstallable, isAppInstalled, deferredPrompt } = a2HSContext || {}
 
-  const { auth, setAuth } = authData
-  const { isAppInstallable, isAppInstalled, deferredPrompt } = a2HSContext
+  const { auth } = authData || {}
+  const { isGranted = () => false, isAdmin = false } = auth || {}
 
   const localeItems = allLocales.map((l) => {
     return {
@@ -49,6 +53,11 @@ const getMenuItems = (props) => {
       primaryText: intl.formatMessage({ id: l.locale }),
       onClick: () => {
         updateLocale(l.locale)
+        if (!isAuthorised) {
+          try {
+            window.location.reload()
+          } catch (error) {}
+        }
       },
       leftIcon: <LanguageIcon />,
     }
@@ -68,7 +77,13 @@ const getMenuItems = (props) => {
     }
   })
 
-  if (isAuthMenuOpen || !isAuthorised) {
+  const handleSignOut = () => {
+    toggleThis('isAuthMenuOpen', false)
+    getAuth().signOut()
+    localStorage.clear()
+  }
+
+  if (isAuthMenuOpen) {
     return [
       {
         value: '/my_account',
@@ -80,11 +95,7 @@ const getMenuItems = (props) => {
       },
       {
         value: '/signin',
-        onClick: isAuthorised
-          ? () => {
-              setAuth({ isAuthenticated: false })
-            }
-          : () => {},
+        onClick: isAuthorised ? () => handleSignOut() : () => {},
         visible: true,
         primaryText: isAuthorised
           ? intl.formatMessage({ id: 'sign_out' })
@@ -95,76 +106,199 @@ const getMenuItems = (props) => {
   }
   return [
     {
-      value: '/home',
-      visible: isAuthorised,
-      primaryText: intl.formatMessage({ id: 'home' }),
-      leftIcon: <DashboardIcon />,
+      value: '/signin',
+      onClick: isAuthorised ? () => handleSignOut() : () => {},
+      visible: !isAuthorised,
+      primaryText: isAuthorised
+        ? intl.formatMessage({ id: 'sign_out' })
+        : intl.formatMessage({ id: 'sign_in' }),
+      leftIcon: isAuthorised ? <ExitToAppIcon /> : <LockIcon />,
     },
     {
-      primaryText: intl.formatMessage({ id: 'demos', defaultMessage: 'Demos' }),
-      primaryTogglesNestedList: true,
+      value: '/',
+      visible: isAuthorised,
+      primaryText: intl.formatMessage({
+        id: 'landing_page',
+        defaultMessage: 'Landing Page',
+      }),
       leftIcon: <Web />,
-      nestedItems: [
-        {
-          value: '/dialog_demo',
-          visible: isAuthorised,
-          primaryText: intl.formatMessage({
-            id: 'dialog_demo',
-            defaultMessage: 'Dialog',
-          }),
-          leftIcon: <ChatBubble />,
-        },
-        {
-          value: '/toast_demo',
-          visible: isAuthorised,
-          primaryText: intl.formatMessage({
-            id: 'toast_demo',
-            defaultMessage: 'Toast',
-          }),
-          leftIcon: <QuestionAnswer />,
-        },
-        {
-          value: '/filter_demo',
-          visible: isAuthorised,
-          primaryText: intl.formatMessage({
-            id: 'filter_demo',
-            defaultMessage: 'Filter',
-          }),
-          leftIcon: <FilterList />,
-        },
-        {
-          value: '/list_page_demo',
-          visible: isAuthorised,
-          primaryText: intl.formatMessage({
-            id: 'list_page_demo_menu',
-            defaultMessage: 'List Page',
-          }),
-          leftIcon: <ViewList />,
-        },
-        {
-          value: '/tabs_demo',
-          visible: isAuthorised,
-          primaryText: intl.formatMessage({
-            id: 'tabs_demo',
-            defaultMessage: 'Tabs Page',
-          }),
-          leftIcon: <Tab />,
-        },
-      ],
+    },
+    {
+      value: '/dashboard',
+      visible: isAuthorised,
+      primaryText: intl.formatMessage({
+        id: 'dashboard',
+        defaultMessage: 'Dashboard',
+      }),
+      leftIcon: <DashboardIcon />,
     },
     {
       value: '/about',
       visible: true,
-      primaryText: intl.formatMessage({ id: 'about' }),
+      primaryText: intl.formatMessage({ id: 'about', defaultMessage: 'About' }),
       leftIcon: <InfoOutlined />,
+    },
+    {
+      value: '/chats',
+      visible: isAuthorised,
+      primaryText: intl.formatMessage({ id: 'chats', defaultMessage: 'Chats' }),
+      leftIcon: <Chat />,
+    },
+    {
+      primaryText: intl.formatMessage({
+        id: 'demos',
+        defaultMessage: 'Demos',
+      }),
+      visible: isAuthorised,
+      primaryTogglesNestedList: true,
+      leftIcon: <Slideshow />,
+      nestedItems: [
+        {
+          value: '/admin',
+          visible: !isAdmin,
+          primaryText: intl.formatMessage({
+            id: 'admin',
+            defaultMessage: 'Admin',
+          }),
+          leftIcon: <Security />,
+        },
+        {
+          value: '/companies',
+          visible: isGranted(auth, 'read_companies'),
+          primaryText: intl.formatMessage({
+            id: 'companies',
+            defaultMessage: 'Companies',
+          }),
+          leftIcon: <Business />,
+        },
+        {
+          value: '/tasks',
+          visible: isAuthorised,
+          primaryText: intl.formatMessage({
+            id: 'tasks',
+            defaultMessage: 'Tasks',
+          }),
+          leftIcon: <Assignment />,
+        },
+        /*
+        // We will publish this when it's done
+        {
+          value: '/posts',
+          visible: isAuthorised,
+          primaryText: intl.formatMessage({
+            id: 'posts',
+            defaultMessage: 'Posts',
+          }),
+          leftIcon: <CallToAction />,
+        },
+        */
+      ],
+    },
+
+    {
+      primaryText: intl.formatMessage({
+        id: 'firebase',
+        defaultMessage: 'Firebase',
+      }),
+      visible: isAuthorised,
+      primaryTogglesNestedList: true,
+      leftIcon: <Whatshot />,
+      nestedItems: [
+        {
+          value: '/firebase_paths',
+          visible: isAuthorised,
+          primaryText: intl.formatMessage({
+            id: 'firebase_paths',
+            defaultMessage: 'Paths',
+          }),
+          leftIcon: <Whatshot />,
+        },
+        {
+          value: '/firebase_lists',
+          visible: isAuthorised,
+          primaryText: intl.formatMessage({
+            id: 'firebase_lists',
+            defaultMessage: 'Lists',
+          }),
+          leftIcon: <Whatshot />,
+        },
+        {
+          value: '/firebase_docs',
+          visible: isAuthorised,
+          primaryText: intl.formatMessage({
+            id: 'firebase_docs',
+            defaultMessage: 'Docs',
+          }),
+          leftIcon: <Whatshot />,
+        },
+        {
+          value: '/firebase_cols',
+          visible: isAuthorised,
+          primaryText: intl.formatMessage({
+            id: 'firebase_cols',
+            defaultMessage: 'Cols',
+          }),
+          leftIcon: <Whatshot />,
+        },
+        {
+          value: '/firebase_messaging',
+          visible: isAuthorised,
+          primaryText: intl.formatMessage({
+            id: 'firebase_messaging',
+            defaultMessage: 'Messaging',
+          }),
+          leftIcon: <Whatshot />,
+        },
+        {
+          value: '/firebase_storage',
+          visible: isAuthorised,
+          primaryText: intl.formatMessage({
+            id: 'firebase_storage',
+            defaultMessage: 'Storage',
+          }),
+          leftIcon: <Whatshot />,
+        },
+      ],
+    },
+
+    {
+      primaryText: intl.formatMessage({
+        id: 'administration',
+        defaultMessage: 'Administration',
+      }),
+      primaryTogglesNestedList: true,
+      visible: isAdmin,
+      leftIcon: <Security />,
+      nestedItems: [
+        {
+          value: '/users',
+          visible: isAuthorised,
+          primaryText: intl.formatMessage({
+            id: 'users',
+            defaultMessage: 'Users',
+          }),
+          leftIcon: <People />,
+        },
+        {
+          value: '/roles',
+          visible: isAuthorised,
+          primaryText: intl.formatMessage({
+            id: 'roles',
+            defaultMessage: 'Roles',
+          }),
+          leftIcon: <AccountBoxIcon />,
+        },
+      ],
     },
     { divider: true },
     {
+      visible: true,
       primaryText: intl.formatMessage({ id: 'settings' }),
       primaryTogglesNestedList: true,
       leftIcon: <SettingsIcon />,
       nestedItems: [
         {
+          visible: true,
           primaryText: intl.formatMessage({ id: 'theme' }),
           secondaryText: intl.formatMessage({ id: themeID }),
           primaryTogglesNestedList: true,
@@ -172,6 +306,7 @@ const getMenuItems = (props) => {
           nestedItems: themeItems,
         },
         {
+          visible: true,
           primaryText: intl.formatMessage({ id: 'language' }),
           secondaryText: intl.formatMessage({ id: locale }),
           primaryTogglesNestedList: true,
@@ -193,8 +328,10 @@ const getMenuItems = (props) => {
           ),
         },
         {
+          visible: true,
           onClick: () => {
             toggleThisTheme('isRTL')
+            window.location.reload(false)
           },
           primaryText: `${isRTL ? 'LTR' : 'RTL'} mode`,
           leftIcon: isRTL ? <LTRIcon /> : <RTLIcon />,
@@ -202,10 +339,9 @@ const getMenuItems = (props) => {
       ],
     },
     {
-      value: null,
       visible: isAppInstallable && !isAppInstalled,
       onClick: () => {
-        deferredPrompt.prompt()
+        deferredPrompt.prompt && deferredPrompt.prompt()
       },
       primaryText: intl.formatMessage({
         id: 'install',

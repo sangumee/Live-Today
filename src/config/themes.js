@@ -1,10 +1,18 @@
 import red from '@mui/material/colors/red'
-import green from '@mui/material/colors/green'
 import pink from '@mui/material/colors/pink'
+import green from '@mui/material/colors/green'
 
 const themes = [
   {
     id: 'default',
+    source: {
+      palette: {
+        primary: { main: '#343434' },
+        secondary: {
+          main: '#c62828',
+        },
+      },
+    },
   },
   {
     id: 'red',
@@ -27,6 +35,9 @@ const themes = [
         error: red,
       },
     },
+  },
+  {
+    id: 'standard',
   },
 ]
 
